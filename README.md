@@ -52,6 +52,17 @@ ChatBridge follows a **modular, service-oriented architecture (SOA)**, with stri
 | **Documentation**| Swagger / OpenAPI |
 | **Testing**      | xUnit (backend), Jasmine/Karma (frontend) |
 
+
+---
+
+## 🔗 Repositories & Commit History
+- **Frontend**: [AngularchattingApplicationFrontEnd](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd)  
+  _(Browse [full commit history](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd/commits))_
+- **Backend**: [ChattingApplication](https://github.com/Amr-Saied/ChattingApplication)  
+  _(Browse [full commit history](https://github.com/Amr-Saied/ChattingApplication/commits))_
+
+---
+
 ---
 
 ## 📂 Project Structure
