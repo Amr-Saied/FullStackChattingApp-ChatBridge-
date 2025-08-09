@@ -54,28 +54,29 @@ ChatBridge follows a **modular, service-oriented architecture (SOA)**, with stri
 
 ---
 
-## **📂 Project Structure**
-
+## 📂 Project Structure
+```
 ChatBridge/
-│
 ├── backend/ChattingApplicationProject/
-│ ├── Controllers/ # API endpoints
-│ ├── Models/ # Entity models
-│ ├── DTO/ # Data Transfer Objects
-│ ├── Services/ # Business logic
-│ ├── Interfaces/ # Service contracts
-│ ├── Hubs/ # SignalR hubs
-│ ├── Data/ # EF Core DbContext & Migrations
-│ ├── Helpers/ # Utilities & AutoMapper profiles
-│ ├── Middlewares/ # Custom middleware
-│ ├── Errors/ # Centralized error handling
-│ └── wwwroot/ # Static backend assets
+│   ├── Controllers/       # API endpoints
+│   ├── Models/            # Entity models
+│   ├── DTO/               # Data Transfer Objects
+│   ├── Services/          # Business logic
+│   ├── Interfaces/        # Service contracts
+│   ├── Hubs/              # SignalR hubs
+│   ├── Data/              # EF Core DbContext & Migrations
+│   ├── Helpers/           # Utilities & AutoMapper profiles
+│   ├── Middlewares/       # Custom middleware
+│   ├── Errors/            # Centralized error handling
+│   └── wwwroot/           # Static backend assets
 │
-├── frontend/ChatBridge-Frontend/
-│ ├── src/app/ # Angular modules, components, services
-│ ├── assets/ # Static resources
-│ ├── environments/ # Environment configs
-│ └── styles/ # Global SCSS/CSS
+└── frontend/ChatBridge-Frontend/
+    ├── src/app/           # Angular modules, components, services
+    ├── assets/            # Static resources
+    ├── environments/      # Environment configs
+    └── styles/            # Global SCSS/CSS
+```
+
 
 
 ---
