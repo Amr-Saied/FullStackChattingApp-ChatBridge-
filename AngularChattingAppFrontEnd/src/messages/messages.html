@@ -1,0 +1,351 @@
+<div class="messages-container">
+  <!-- Conversations List -->
+  @if (!showChat && !showLikedUsers && conversations.length > 0) {
+  <div class="conversations-list">
+    <div class="conversations-header">
+      <h2>💬 Your Conversations</h2>
+      <div class="conversations-count">{{ conversations.length }} chats</div>
+    </div>
+
+    <div class="conversations-grid">
+      @for (conversation of conversations; track conversation.otherUserId) {
+      <div class="conversation-card" (click)="selectConversation(conversation)">
+        <div class="conversation-avatar">
+          <img
+            [src]="getProfileImageUrl(conversation.otherUserPhotoUrl)"
+            [alt]="conversation.otherUsername"
+            class="avatar-image"
+          />
+          <div
+            class="online-status"
+            [class.online]="isUserOnline(conversation.otherUserId)"
+            [class.offline]="!isUserOnline(conversation.otherUserId)"
+          ></div>
+        </div>
+
+        <div class="conversation-content">
+          <div class="conversation-header">
+            <h3 class="username">{{ conversation.otherUsername }}</h3>
+            <span class="message-time">{{
+              formatTime(conversation.lastMessageTime)
+            }}</span>
+          </div>
+
+          <div class="conversation-footer">
+            <p class="last-message">
+              <span class="message-icon">💭</span>
+              {{ conversation.lastMessage }}
+            </p>
+            <div class="conversation-badges">
+              @if (conversation.unreadCount > 0) {
+              <div class="unread-badge">
+                {{ conversation.unreadCount }}
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  <!-- No Conversations - Show Liked Users -->
+  @if (!showChat && showLikedUsers) {
+  <div class="liked-users">
+    <h2>Start a Conversation</h2>
+    <p class="no-conversations">
+      You don't have any conversations yet. Start chatting with people you
+      liked!
+    </p>
+
+    <div class="liked-users-grid">
+      @for (user of likedUsers; track user.id) {
+      <div class="user-card" (click)="startChatWithUser(user)">
+        <img
+          [src]="getProfileImageUrl(user.photoUrl)"
+          [alt]="user.userName"
+          class="user-photo"
+        />
+        <div class="user-info">
+          <h3>{{ user.userName }}</h3>
+          <p>{{ user.knownAs }}</p>
+        </div>
+        <button class="chat-button">Start Chat</button>
+      </div>
+      }
+    </div>
+
+    @if (likedUsers.length === 0) {
+    <div class="no-liked-users">
+      <p>
+        You haven't liked anyone yet. Go to the Members page to discover people!
+      </p>
+      <button class="primary-button" (click)="navigateToMembers()">
+        Browse Members
+      </button>
+    </div>
+    }
+  </div>
+  }
+
+  <!-- No Conversations and No Liked Users -->
+  @if (!showChat && !showLikedUsers && conversations.length === 0) {
+  <div class="no-conversations-container">
+    <div class="no-conversations-content">
+      <div class="no-conversations-icon">💬</div>
+      <h2>No Conversations Yet</h2>
+      <p class="no-conversations-message">
+        You don't have any conversations yet. Start connecting with people to
+        begin chatting!
+      </p>
+      <div class="no-conversations-actions">
+        <button class="primary-button" (click)="navigateToMembers()">
+          Browse Members
+        </button>
+        <button class="secondary-button" (click)="loadLikedUsers()">
+          View Liked Users
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Chat Window -->
+  @if (showChat && selectedConversation) {
+  <div class="chat-window">
+    <div class="chat-header">
+      <button class="back-button" (click)="backToConversations()">
+        ← Back
+      </button>
+      <h2>{{ selectedConversation.otherUsername }}</h2>
+    </div>
+
+    <div class="messages-list">
+      @for (message of messages; track message.id) {
+      <div
+        class="message-item"
+        [ngClass]="{
+          'my-message': isMyMessage(message),
+          'other-message': !isMyMessage(message)
+        }"
+      >
+        @if (isMyMessage(message)) {
+        <div class="message-avatar">
+          <img
+            [src]="getProfileImageUrl(message.senderPhotoUrl)"
+            [alt]="message.senderUsername"
+            class="message-avatar-image"
+          />
+        </div>
+        }
+
+        <div class="message-content">
+          <!-- Voice Message -->
+          @if (isVoiceMessage(message)) {
+          <div class="voice-message">
+            <div class="voice-message-bubble">
+              <button
+                class="play-voice-btn"
+                (click)="toggleVoicePlayback(message)"
+                [class.playing]="isVoicePlaying(message)"
+              >
+                @if (!isVoicePlaying(message)) {
+                <span>▶️</span>
+                } @if (isVoicePlaying(message)) {
+                <span>⏸️</span>
+                }
+              </button>
+              <div class="voice-waveform">
+                <div class="waveform-bars">
+                  @for (bar of getWaveformBars(message.voiceDuration || 0);
+                  track bar) {
+                  <div class="waveform-bar"></div>
+                  }
+                </div>
+              </div>
+              <span class="voice-duration">{{
+                formatRecordingDuration(message.voiceDuration || 0)
+              }}</span>
+            </div>
+            @if (message.content) {
+            <p class="voice-message-text">
+              {{ message.content }}
+            </p>
+            }
+          </div>
+          }
+
+          <!-- Text Message -->
+          @if (!isVoiceMessage(message)) {
+          <p>
+            {{ message.content }}
+            @if (message.emoji) {
+            <span class="emoji">{{ message.emoji }}</span>
+            }
+          </p>
+          }
+          <div class="message-footer">
+            <span class="message-time">{{
+              formatTime(message.messageSent)
+            }}</span>
+
+            <!-- Read Status Indicators for My Messages -->
+            @if (isMyMessage(message)) {
+            <div class="message-status">
+              <span
+                class="read-status"
+                [ngClass]="{
+                  read: message.dateRead,
+                  sent: !message.dateRead
+                }"
+                [title]="getReadStatusTitle(message)"
+              >
+                @if (!message.dateRead) {
+                <span>✓</span>
+                } @if (message.dateRead) {
+                <span>✓✓</span>
+                }
+              </span>
+
+              <button
+                class="delete-message-btn"
+                (click)="deleteMessage(message.id)"
+                title="Delete message"
+              >
+                🗑️
+              </button>
+            </div>
+            }
+          </div>
+        </div>
+
+        @if (!isMyMessage(message)) {
+        <div class="message-avatar">
+          <img
+            [src]="getProfileImageUrl(message.senderPhotoUrl)"
+            [alt]="message.senderUsername"
+            class="message-avatar-image"
+          />
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Typing indicator -->
+      @if (isTyping) {
+      <div class="typing-indicator">
+        <div class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="typing-text"
+          >{{ selectedConversation.otherUsername }} is typing...</span
+        >
+      </div>
+      }
+    </div>
+
+    <!-- Voice Recording UI -->
+    @if (isRecording) {
+    <div class="voice-recording-container">
+      <div class="voice-recording-indicator">
+        <div class="recording-dot"></div>
+        <span class="recording-text">Recording...</span>
+        <span class="recording-duration">{{
+          formatRecordingDuration(recordingDuration)
+        }}</span>
+      </div>
+      <div class="voice-recording-actions">
+        <button (click)="stopVoiceRecording()" class="stop-recording-btn">
+          Stop & Send
+        </button>
+        <button (click)="cancelVoiceRecording()" class="cancel-recording-btn">
+          Cancel
+        </button>
+      </div>
+    </div>
+    } @if (!isRecording) {
+    <div class="message-input">
+      <input
+        type="text"
+        [(ngModel)]="newMessageContent"
+        placeholder="Type your message..."
+        (keyup.enter)="sendMessage()"
+        (input)="onMessageInput()"
+        class="message-text-input"
+      />
+      <div class="input-buttons">
+        <button
+          type="button"
+          (click)="toggleEmojiPicker($event)"
+          class="emoji-button"
+        >
+          😊
+        </button>
+        <button
+          type="button"
+          (click)="startVoiceRecording()"
+          class="voice-button"
+          title="Record voice message"
+        >
+          🎤
+        </button>
+        <button (click)="sendMessage()" class="send-button">Send</button>
+      </div>
+    </div>
+    }
+
+    <!-- Emoji Picker -->
+    @if (showEmojiPicker) {
+    <div
+      class="emoji-picker-container"
+      [ngClass]="{ show: showEmojiPicker }"
+      (click)="onEmojiPickerClick($event)"
+    >
+      <div class="emoji-picker">
+        <div class="emoji-grid">
+          @for (emoji of emojis; track emoji) {
+          <button type="button" class="emoji-btn" (click)="addEmoji(emoji)">
+            {{ emoji }}
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>
+
+<!-- Delete Confirmation Modal -->
+@if (showDeleteModal) {
+<div class="modal-overlay" (click)="cancelDelete()">
+  <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Delete Message</h3>
+      <button class="modal-close" (click)="cancelDelete()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="delete-warning">
+        <p><strong>Are you sure you want to delete this message?</strong></p>
+        <p>This action cannot be undone.</p>
+      </div>
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelDelete()"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

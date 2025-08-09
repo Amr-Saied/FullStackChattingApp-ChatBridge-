@@ -1,0 +1,27 @@
+<div class="buggy-page mt-5">
+  <button
+    class="btn btn-main mb-4"
+    style="min-width: 140px"
+    (click)="goAdmin()"
+  >
+    ← Back to Admin Panel
+  </button>
+  <div class="text-center">
+    <h2>Buggy Component (Error Tester)</h2>
+    <p>Click a button to trigger an error and test the interceptor:</p>
+    <div class="btn-group mt-4">
+      <button class="btn btn-danger me-2" (click)="get400Error()">
+        Trigger 400 Error
+      </button>
+      <button class="btn btn-warning me-2" (click)="get401Error()">
+        Trigger 401 Error
+      </button>
+      <button class="btn btn-info me-2" (click)="get404Error()">
+        Trigger 404 Error
+      </button>
+      <button class="btn btn-dark" (click)="get500Error()">
+        Trigger 500 Error
+      </button>
+    </div>
+  </div>
+</div>

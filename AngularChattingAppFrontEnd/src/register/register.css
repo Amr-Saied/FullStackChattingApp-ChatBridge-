@@ -1,0 +1,90 @@
+/* Registration Form Styling */
+/* Register Card Specific Styling */
+.register-card {
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: var(--main-card-radius);
+  box-shadow: var(--main-shadow);
+  background: var(--main-card-bg);
+  transition: all 0.3s ease;
+  width: 100%;
+  min-width: 500px; /* Increased from 320px */
+  position: relative; /* Changed from absolute */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.register-card:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.register-card .card-header {
+  border-radius: var(--main-card-radius) var(--main-card-radius) 0 0;
+  background: var(--main-gradient) !important;
+  border: none;
+}
+
+.register-card .card-body {
+  padding: 2.5rem;
+}
+
+/* Form field spacing */
+.register-card .form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Container sizing for wider form */
+.container {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: relative;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}
+
+/* Form validation messages */
+.text-danger {
+  font-size: 0.875rem;
+}
+
+/* Animation for form elements */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

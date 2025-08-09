@@ -1,0 +1,84 @@
+<div class="member-list-container">
+  <!-- Search Input -->
+  <div class="search-container">
+    <div class="input-group">
+      <input
+        #searchInput
+        type="text"
+        class="form-control"
+        placeholder="Search members by username, known as, or city..."
+        (input)="onSearchInput($event)"
+        [value]="searchTerm"
+      />
+      <button class="btn btn-outline-secondary" type="button" disabled>
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+    <!-- Clear Search Button -->
+    <button
+      *ngIf="searchTerm.trim()"
+      class="btn btn-outline-primary mt-2"
+      (click)="clearSearchAndLoadAll()"
+    >
+      <i class="fas fa-times me-1"></i>Clear Search & Show All Members
+    </button>
+  </div>
+
+  <!-- Loading Spinner for Search -->
+  <div *ngIf="isSearching" class="search-loading">
+    <ngx-spinner name="searchSpinner" type="ball-clip-rotate"></ngx-spinner>
+    <p>Searching...</p>
+  </div>
+
+  <div *ngIf="isLoaded && members.length === 0" class="no-members">
+    <p>No members found.</p>
+  </div>
+
+  <div class="row g-4" *ngIf="members.length > 0">
+    <div
+      class="col-12 col-sm-6 col-md-4 col-lg-3"
+      *ngFor="let member of members"
+    >
+      <app-member-card [member]="member"></app-member-card>
+    </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div
+    class="pagination-container"
+    *ngIf="totalPages > 1 && !searchTerm.trim()"
+  >
+    <div class="pagination-info">
+      <span>Page {{ paginationParams.pageNumber }} of {{ totalPages }}</span>
+      <span class="total-count">({{ totalCount }} total members)</span>
+    </div>
+    <div class="pagination-controls">
+      <button
+        class="btn btn-outline-primary"
+        [disabled]="paginationParams.pageNumber === 1"
+        (click)="onPageChanged(paginationParams.pageNumber - 1)"
+      >
+        Previous
+      </button>
+
+      <div class="page-numbers">
+        <button
+          *ngFor="let page of getPageNumbers()"
+          class="btn btn-outline-primary page-btn"
+          [class.active]="page === paginationParams.pageNumber"
+          (click)="onPageChanged(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+
+      <button
+        class="btn btn-outline-primary"
+        [disabled]="paginationParams.pageNumber >= totalPages"
+        (click)="onPageChanged(paginationParams.pageNumber + 1)"
+      >
+        Next
+      </button>
+    </div>
+  </div>
+</div>

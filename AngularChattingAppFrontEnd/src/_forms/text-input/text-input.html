@@ -1,0 +1,47 @@
+<div class="form-group mb-3">
+  <!-- Label -->
+  <label [for]="fieldName" class="form-label" *ngIf="label">
+    <i [class]="icon + ' me-1 text-primary'" *ngIf="icon"></i>
+    {{ label }}
+    <span class="text-danger" *ngIf="isRequired">*</span>
+  </label>
+
+  <!-- Input Group -->
+  <div class="input-group">
+    <!-- Input Group Text (Icon) -->
+    <span class="input-group-text bg-light" *ngIf="icon">
+      <i [class]="getIconClass() + ' text-muted'"></i>
+    </span>
+
+    <!-- Input Field -->
+    <input
+      [type]="getCurrentType()"
+      class="form-control"
+      [id]="fieldName"
+      [placeholder]="placeholder"
+      [value]="value"
+      [disabled]="disabled"
+      (input)="onInput($event)"
+      (blur)="onBlur()"
+      [class.is-invalid]="errorMessage && touched"
+    />
+
+    <!-- Password Toggle Button -->
+    <button
+      *ngIf="showPasswordToggle && type === 'password'"
+      class="btn btn-outline-secondary"
+      type="button"
+      (click)="togglePasswordVisibility()"
+    >
+      <i [class]="getIconClass()"></i>
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div class="form-text" *ngIf="errorMessage && touched">
+    <small class="text-danger">
+      <i class="fas fa-exclamation-circle me-1"></i>
+      {{ errorMessage }}
+    </small>
+  </div>
+</div>

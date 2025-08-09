@@ -1,0 +1,120 @@
+/* Navigation Bar Styling */
+/* Only keep nav-specific layout or animation. Remove button, card, and form styles now in styles.css */
+
+/* Add this to remove rounded corners from the main navbar element */
+.navbar {
+  border-radius: 0;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #f8f9fa !important;
+  transform: translateY(-1px);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Navbar Profile Photo Styling */
+.navbar-profile-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.navbar-profile-photo:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.05);
+}
+
+/* Animation */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-nav {
+    margin-bottom: 15px;
+  }
+}
+
+/* Modal Styles */
+.modal {
+  z-index: 1050;
+}
+
+.modal-backdrop {
+  z-index: 1040;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 1rem 1rem 0 0;
+}
+
+.modal-body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 0 0 1rem 1rem;
+}
+
+.modal-title {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.btn-close {
+  filter: var(--btn-close-filter);
+}
+
+/* Dark theme modal adjustments */
+.dark-theme .modal-content {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.dark-theme .modal-header {
+  background-color: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-theme .modal-body {
+  background-color: var(--bg-secondary);
+}

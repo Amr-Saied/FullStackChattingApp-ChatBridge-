@@ -1,0 +1,200 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-10 col-md-10 col-lg-9 col-xl-8 col-xxl-7">
+      <div class="card shadow-lg border-0 register-card">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h2 class="card-title mb-0">
+            <i class="fas fa-user-plus me-2"></i>
+            Create Account
+          </h2>
+          <p class="mb-0 mt-2 opacity-75">Join our community today!</p>
+        </div>
+
+        <div class="card-body p-4">
+          <form [formGroup]="registerForm" (ngSubmit)="register()">
+            <!-- Username Field -->
+            <app-text-input
+              label="Username"
+              fieldName="username"
+              placeholder="Enter your username"
+              icon="fas fa-user"
+              [isRequired]="true"
+              [errorMessage]="getFieldError('username')"
+              formControlName="username"
+            >
+            </app-text-input>
+
+            <!-- Email Field -->
+            <app-text-input
+              label="Email"
+              fieldName="email"
+              type="email"
+              placeholder="Enter your email address"
+              icon="fas fa-envelope"
+              [isRequired]="true"
+              [errorMessage]="getFieldError('email')"
+              formControlName="email"
+            >
+            </app-text-input>
+
+            <!-- Password Field -->
+            <app-text-input
+              label="Password"
+              fieldName="password"
+              type="password"
+              placeholder="Enter your password"
+              icon="fas fa-lock"
+              [isRequired]="true"
+              [showPasswordToggle]="true"
+              [errorMessage]="getFieldError('password')"
+              formControlName="password"
+            >
+            </app-text-input>
+
+            <!-- Confirm Password Field -->
+            <app-text-input
+              label="Confirm Password"
+              fieldName="confirmPassword"
+              type="password"
+              placeholder="Confirm your password"
+              icon="fas fa-lock"
+              [isRequired]="true"
+              [showPasswordToggle]="true"
+              [errorMessage]="getFieldError('confirmPassword')"
+              formControlName="confirmPassword"
+            >
+            </app-text-input>
+
+            <!-- Password Match Error -->
+            <div class="form-text" *ngIf="getPasswordMatchError()">
+              <small class="text-danger">
+                <i class="fas fa-exclamation-circle me-1"></i>
+                {{ getPasswordMatchError() }}
+              </small>
+            </div>
+
+            <!-- Date of Birth Field -->
+            <div class="mb-3">
+              <label for="dateOfBirth" class="form-label">
+                <i class="fas fa-calendar me-2"></i>
+                Date of Birth *
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                id="dateOfBirth"
+                formControlName="dateOfBirth"
+                [class.is-invalid]="
+                  registerForm.get('dateOfBirth')?.invalid &&
+                  registerForm.get('dateOfBirth')?.touched
+                "
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="getFieldError('dateOfBirth')"
+              >
+                {{ getFieldError("dateOfBirth") }}
+              </div>
+            </div>
+
+            <!-- Known As Field -->
+            <app-text-input
+              label="Known As"
+              fieldName="knownAs"
+              placeholder="Enter your display name"
+              icon="fas fa-id-card"
+              [isRequired]="false"
+              [errorMessage]="getFieldError('knownAs')"
+              formControlName="knownAs"
+            >
+            </app-text-input>
+
+            <!-- Gender Field -->
+            <div class="mb-3">
+              <label for="gender" class="form-label">
+                <i class="fas fa-venus-mars me-2"></i>
+                Gender *
+              </label>
+              <select
+                class="form-select"
+                id="gender"
+                formControlName="gender"
+                [class.is-invalid]="
+                  registerForm.get('gender')?.invalid &&
+                  registerForm.get('gender')?.touched
+                "
+              >
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              <div class="invalid-feedback" *ngIf="getFieldError('gender')">
+                {{ getFieldError("gender") }}
+              </div>
+            </div>
+
+            <!-- City Field -->
+            <app-text-input
+              label="City"
+              fieldName="city"
+              placeholder="Enter your city"
+              icon="fas fa-city"
+              [isRequired]="false"
+              [errorMessage]="getFieldError('city')"
+              formControlName="city"
+            >
+            </app-text-input>
+
+            <!-- Country Field -->
+            <app-text-input
+              label="Country"
+              fieldName="country"
+              placeholder="Enter your country"
+              icon="fas fa-globe"
+              [isRequired]="false"
+              [errorMessage]="getFieldError('country')"
+              formControlName="country"
+            >
+            </app-text-input>
+
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                [disabled]="registerForm.invalid || isLoading"
+              >
+                <span *ngIf="!isLoading">
+                  <i class="fas fa-user-plus me-2"></i>
+                  Create Account
+                </span>
+                <span *ngIf="isLoading">
+                  <i class="fas fa-spinner fa-spin me-2"></i>
+                  Creating Account...
+                </span>
+              </button>
+
+              <button
+                type="button"
+                class="btn btn-outline-secondary btn-lg"
+                (click)="cancelRegistration()"
+                [disabled]="isLoading"
+              >
+                <i class="fas fa-times me-2"></i>
+                Cancel
+              </button>
+            </div>
+
+            <div class="text-center mt-3">
+              <small class="text-muted">
+                By creating an account, you agree to our
+                <a href="#" class="text-decoration-none">Terms of Service</a>
+                and
+                <a href="#" class="text-decoration-none">Privacy Policy</a>
+              </small>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,508 @@
+<div class="admin-dashboard">
+  <div class="dashboard-header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome to the administration panel</p>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="management-section main-card mb-4 p-4">
+      <h2>User Management</h2>
+      <div class="admin-controls">
+        <button
+          class="btn btn-main"
+          style="min-width: 160px"
+          (click)="toggleUsers()"
+        >
+          {{ showUsers ? "Hide Users" : "Show Users" }}
+        </button>
+        @if (showUsers) {
+          <button
+            class="btn btn-secondary ml-3"
+            style="min-width: 160px"
+            (click)="refreshBanStatus()"
+          >
+            Refresh Ban Status
+          </button>
+        }
+      </div>
+    </div>
+
+    @if (showUsers) {
+      <div class="users-section">
+
+        @if (loading) {
+          <div class="loading">
+            <p>Loading users...</p>
+          </div>
+        }
+
+        @if (!loading) {
+          <div class="search-container">
+            <h3>Registered Users ({{ totalCount }})</h3>
+            <div class="search-input-group">
+              <input
+                #searchInput
+                type="text"
+                class="search-input"
+                placeholder="Search users by name, location..."
+                [value]="searchTerm"
+                (input)="onSearchInput($event)"
+              />
+              @if (searchTerm.trim()) {
+                <button
+                  class="btn btn-secondary search-clear"
+                  (click)="clearSearchAndLoadAll()"
+                  title="Clear search"
+                >
+                  <i class="fa fa-times"></i>
+                </button>
+              }
+            </div>
+          </div>
+        }
+
+        @if (!loading && adminUsers.length > 0) {
+          <div class="users-list">
+            <div class="table-container">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Role</th>
+                    <th>Age</th>
+                    <th>Location</th>
+                    <th>Joined</th>
+                    <th>Last Active</th>
+                    <th>Ban Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (user of adminUsers; track user.id) {
+                    <tr>
+                      <td>
+                        <div class="table-user-info">
+                          <img
+                            [src]="user.photoUrl || '/assets/default-user.svg'"
+                            alt="User Photo"
+                            class="table-user-photo"
+                          />
+                          <div class="table-user-details">
+                            <div class="table-username">{{ user.userName }}</div>
+                            <div class="table-known-as">{{ user.knownAs }}</div>
+                            <div class="table-user-id">ID: {{ user.id }}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span
+                          class="table-role"
+                          [class]="'table-role-' + user.role.toLowerCase()"
+                        >
+                          {{ user.role || "User" }}
+                        </span>
+                      </td>
+                      <td>{{ user.age }}</td>
+                      <td>{{ user.city }}, {{ user.country }}</td>
+                      <td>{{ user.created | date : "short" }}</td>
+                      <td>{{ user.lastActive | date : "short" }}</td>
+                      <td>
+                        @if (user.isBanned) {
+                          <div class="ban-status-display">
+                            @if (user.banReason) {
+                              <div class="ban-reason">
+                                <strong>Reason:</strong> {{ user.banReason }}
+                              </div>
+                            }
+                            @if (!user.isPermanentBan && user.banExpiryDate) {
+                              <div class="ban-expiry">
+                                <strong>Unbans on:</strong>
+                                {{ user.banExpiryDate | date : "MMM d, y h:mm a" }}
+                              </div>
+                            }
+                            @if (user.isPermanentBan) {
+                              <div class="ban-permanent">
+                                <strong>Permanent Ban</strong>
+                              </div>
+                            }
+                          </div>
+                        }
+                        @if (!user.isBanned) {
+                          <div class="no-ban">
+                            <span class="text-success">Active</span>
+                          </div>
+                        }
+                      </td>
+                      <td>
+                        <div class="table-actions">
+                          <button
+                            class="btn btn-edit"
+                            (click)="openEditModal(user)"
+                            title="Edit User"
+                          >
+                            <i class="fa fa-edit"></i> Edit
+                          </button>
+                          @if (!user.isBanned) {
+                            <button
+                              class="btn btn-ban"
+                              (click)="openBanModal(user)"
+                              title="Ban User"
+                            >
+                              <i class="fa fa-ban"></i> Ban
+                            </button>
+                          }
+                          @if (user.isBanned) {
+                            <button
+                              class="btn btn-unban"
+                              (click)="unbanUser(user)"
+                              title="Unban User"
+                            >
+                              <i class="fa fa-check"></i> Unban
+                            </button>
+                          }
+                          <button
+                            class="btn btn-delete"
+                            (click)="openDeleteModal(user)"
+                            title="Delete User"
+                          >
+                            <i class="fa fa-trash"></i> Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            @if (totalPages > 1 && !loading && adminUsers.length > 0 && !searchTerm.trim()) {
+              <div class="pagination-container mt-2 mb-4">
+                <div class="pagination-info">
+                  <span>Page {{ paginationParams.pageNumber }} of {{ totalPages }}</span>
+                  <span class="total-count">({{ totalCount }} total users)</span>
+                </div>
+                <div class="pagination-controls">
+                  <button
+                    class="btn btn-outline-primary"
+                    [disabled]="paginationParams.pageNumber === 1"
+                    (click)="onPageChanged(paginationParams.pageNumber - 1)"
+                  >
+                    Previous
+                  </button>
+
+                  <div class="page-numbers">
+                    @for (page of getPageNumbers(); track page) {
+                      <button
+                        class="btn btn-outline-primary page-btn"
+                        [class.active]="page === paginationParams.pageNumber"
+                        (click)="onPageChanged(page)"
+                      >
+                        {{ page }}
+                      </button>
+                    }
+                  </div>
+
+                  <button
+                    class="btn btn-outline-primary"
+                    [disabled]="paginationParams.pageNumber >= totalPages"
+                    (click)="onPageChanged(paginationParams.pageNumber + 1)"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (!loading && adminUsers.length === 0) {
+          <div class="no-users">
+            <div class="no-users-content">
+              <i
+                class="fa fa-search"
+                style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 20px;"
+              ></i>
+              <h3>No users found</h3>
+              @if (searchTerm.trim()) {
+                <p>No users match your search term "<strong>{{ searchTerm }}</strong>".</p>
+              }
+              @if (!searchTerm.trim()) {
+                <p>No users are currently registered in the system.</p>
+              }
+              @if (searchTerm.trim()) {
+                <button
+                  class="btn btn-primary"
+                  (click)="clearSearchAndLoadAll()"
+                  style="margin-top: 15px"
+                >
+                  <i class="fa fa-refresh"></i> Clear Search & Show All Users
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="main-card p-4 mt-4">
+      <h2 class="mb-3">Error Testing</h2>
+      <a
+        routerLink="/buggy-test"
+        class="btn btn-main"
+        style="min-width: 160px"
+      >
+        Go to Buggy Error Tester
+      </a>
+    </div>
+  </div>
+
+  @if (showEditModal) {
+    <div class="modal-overlay" (click)="closeEditModal()">
+      <div class="modal-content edit-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Edit User: {{ editingUser?.userName }}</h3>
+          <button class="modal-close" (click)="closeEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="saveUserEdit()" #editFormRef="ngForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editUserName">Username:</label>
+                <input
+                  type="text"
+                  id="editUserName"
+                  [(ngModel)]="editForm.userName"
+                  name="userName"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="editKnownAs">Known As:</label>
+                <input
+                  type="text"
+                  id="editKnownAs"
+                  [(ngModel)]="editForm.knownAs"
+                  name="knownAs"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editDateOfBirth">Date of Birth:</label>
+                <input
+                  type="date"
+                  id="editDateOfBirth"
+                  [(ngModel)]="editForm.dateOfBirth"
+                  name="dateOfBirth"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editGender">Gender:</label>
+                <select
+                  id="editGender"
+                  [(ngModel)]="editForm.gender"
+                  name="gender"
+                  class="form-control"
+                >
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="editCity">City:</label>
+                <input
+                  type="text"
+                  id="editCity"
+                  [(ngModel)]="editForm.city"
+                  name="city"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group">
+                <label for="editCountry">Country:</label>
+                <input
+                  type="text"
+                  id="editCountry"
+                  [(ngModel)]="editForm.country"
+                  name="country"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="editRole">Role:</label>
+              <select
+                id="editRole"
+                [(ngModel)]="editForm.role"
+                name="role"
+                class="form-control"
+              >
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editIntroduction">Introduction:</label>
+              <textarea
+                id="editIntroduction"
+                [(ngModel)]="editForm.introduction"
+                name="introduction"
+                class="form-control"
+                rows="3"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="editLookingFor">Looking For:</label>
+              <textarea
+                id="editLookingFor"
+                [(ngModel)]="editForm.lookingFor"
+                name="lookingFor"
+                class="form-control"
+                rows="3"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="editInterests">Interests:</label>
+              <textarea
+                id="editInterests"
+                [(ngModel)]="editForm.interests"
+                name="interests"
+                class="form-control"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="modal-actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="closeEditModal()"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showBanModal) {
+    <div class="modal-overlay" (click)="closeBanModal()">
+      <div class="modal-content ban-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Ban User: {{ banningUser?.userName }}</h3>
+          <button class="modal-close" (click)="closeBanModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="banUser()" #banFormRef="ngForm">
+            <div class="form-group">
+              <label for="banReason">Ban Reason:</label>
+              <textarea
+                id="banReason"
+                [(ngModel)]="banForm.banReason"
+                name="banReason"
+                class="form-control"
+                rows="3"
+                placeholder="Enter reason for banning this user..."
+                required
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label class="checkbox-container">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="banForm.isPermanentBan"
+                  name="isPermanentBan"
+                  (change)="onPermanentBanChange()"
+                />
+                <span class="checkmark"></span>
+                Permanent Ban
+              </label>
+            </div>
+            @if (!banForm.isPermanentBan) {
+              <div class="form-group">
+                <label for="banExpiryDate">Ban Expiry Date:</label>
+                <input
+                  type="datetime-local"
+                  id="banExpiryDate"
+                  [(ngModel)]="banForm.banExpiryDate"
+                  name="banExpiryDate"
+                  class="form-control"
+                  [required]="!banForm.isPermanentBan"
+                />
+              </div>
+            }
+            <div class="ban-warning">
+              <p>
+                <strong>Warning:</strong> This action will prevent the user from accessing the application.
+              </p>
+              @if (banForm.isPermanentBan) {
+                <p>
+                  <strong>Permanent bans</strong> can only be reversed manually by an admin.
+                </p>
+              }
+            </div>
+            <div class="modal-actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="closeBanModal()"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-danger">Ban User</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showDeleteModal) {
+    <div class="modal-overlay" (click)="closeDeleteModal()">
+      <div class="modal-content delete-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Delete User</h3>
+          <button class="modal-close" (click)="closeDeleteModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-warning">
+            <p>
+              <strong>Are you sure you want to delete user "{{ deletingUser?.userName }}"?</strong>
+            </p>
+            <p>This action will permanently remove:</p>
+            <ul>
+              <li>User profile and all personal information</li>
+              <li>All messages sent and received</li>
+              <li>All photos and media</li>
+              <li>All likes and connections</li>
+            </ul>
+            <p class="danger-text">
+              <strong>This action cannot be undone!</strong>
+            </p>
+          </div>
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="closeDeleteModal()"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger" (click)="deleteUser()">
+              Delete User
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

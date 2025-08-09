@@ -1,0 +1,446 @@
+/* Profile Container */
+.profile-container {
+  background: var(--main-bg);
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+/* Profile Banner */
+.profile-banner {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 15px;
+  margin-bottom: -50px;
+  z-index: 1;
+}
+
+.profile-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Profile Content Wrapper */
+.profile-content-wrapper {
+  position: relative;
+  z-index: 2;
+  padding: 0 20px;
+}
+
+/* Profile Card */
+.profile-card {
+  background: var(--main-card-bg);
+  border-radius: 15px;
+  box-shadow: var(--main-shadow);
+  overflow: hidden;
+  min-height: 600px;
+}
+
+/* Profile Header */
+.profile-header {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+@media (min-width: 768px) {
+  .profile-header {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+.profile-photo-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .profile-photo-wrapper {
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+}
+
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 768px) {
+  .profile-photo {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.profile-meta {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.profile-meta span {
+  display: inline-block;
+  margin-right: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.profile-meta i {
+  color: #764ba2;
+  margin-right: 0.5rem;
+}
+
+/* Profile Tabs */
+.profile-tabs {
+  border-bottom: 1px solid var(--border-color);
+  background: var(--main-bg);
+}
+
+.profile-tab-btn {
+  border: none;
+  background: none;
+  padding: 1rem 1.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.profile-tab-btn:hover {
+  color: var(--text-color);
+  background: var(--border-color);
+}
+
+.profile-tab-btn.active {
+  color: #764ba2;
+  border-bottom-color: #764ba2;
+  background: var(--main-card-bg);
+}
+
+.profile-tab-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 0;
+}
+
+.tab-pane {
+  padding: 2rem;
+}
+
+/* About Content - LEFT ALIGNED */
+.about-content {
+  max-height: 150px;
+  overflow-y: auto;
+  line-height: 1.7;
+  color: var(--text-color);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  padding-right: 5px;
+  text-align: left;
+}
+
+/* Scrollbar styling for about-content */
+.about-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.about-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.about-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.about-content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Interests Content - LEFT ALIGNED */
+.interests-content {
+  text-align: left;
+}
+
+/* Looking For Content - LEFT ALIGNED */
+.looking-for-content {
+  text-align: left;
+}
+
+/* Gallery Header - TITLE LEFT, CONTROLS RIGHT - VERY CLOSE TO GALLERY */
+.gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  margin: 0 auto;
+  margin-bottom: 0px; /* No margin - directly touching the gallery */
+  margin-top: -20px; /* Move down more by pulling up the gallery */
+  position: relative;
+  z-index: 10;
+}
+
+.gallery-title {
+  flex: 1;
+  text-align: left;
+}
+
+.gallery-title h4 {
+  margin: 0;
+  color: var(--text-color);
+}
+
+.gallery-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Smaller Add Photo button */
+.gallery-controls .btn-main {
+  font-size: 1rem;
+  padding: 0.25rem 0.5rem;
+  line-height: 1.4;
+}
+
+/* Photo Gallery Wrapper - CENTERED AND NARROWER */
+.gallery-wrapper {
+  height: 250px;
+  width: 50%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+/* Ensure the ng-gallery component itself takes up the full space of its wrapper */
+.gallery-wrapper gallery {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Target images specifically within the ng-gallery component */
+.gallery-wrapper gallery .g-image,
+.gallery-wrapper gallery .g-thumb,
+.gallery-wrapper gallery img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+/* Empty Gallery State - CENTERED AND NARROWER */
+.empty-gallery {
+  height: 250px;
+  width: 50%;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #dee2e6;
+  transition: all 0.3s ease;
+}
+
+.empty-gallery:hover {
+  border-color: #764ba2;
+  background: linear-gradient(135deg, #f0f2f5 0%, #e3e6ea 100%);
+}
+
+.empty-gallery-content {
+  text-align: center;
+  padding: 2rem;
+  max-width: 400px;
+}
+
+.empty-gallery-icon {
+  font-size: 3rem;
+  color: #adb5bd;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.empty-gallery-title {
+  color: #6c757d;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-gallery-message {
+  color: #868e96;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Edit Mode Gallery - IMPROVED LAYOUT */
+.gallery-wrapper.edit-mode {
+  width: 80%;
+  margin: 0 auto;
+  height: auto;
+  min-height: 300px;
+  padding: 20px 0;
+}
+
+.gallery-wrapper.edit-mode .row {
+  justify-content: center;
+  gap: 15px;
+}
+
+.gallery-wrapper.edit-mode .col-4,
+.gallery-wrapper.edit-mode .col-md-3 {
+  flex: 0 0 auto;
+  width: 150px;
+  margin-bottom: 15px;
+}
+
+.gallery-wrapper.edit-mode .position-relative {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.gallery-wrapper.edit-mode .position-relative:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-wrapper.edit-mode img {
+  width: 100% !important;
+  height: 120px !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+.gallery-wrapper.edit-mode .btn-danger {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 10;
+}
+
+/* Responsive Adjustments using Media Queries */
+@media (max-width: 767.98px) {
+  .profile-content-wrapper {
+    padding: 0 10px;
+  }
+
+  .profile-header {
+    padding: 1.5rem;
+  }
+
+  .profile-photo {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-name {
+    font-size: 1.5rem;
+  }
+
+  .profile-meta span {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .tab-pane {
+    padding: 1rem;
+  }
+
+  /* Mobile adjustments for content alignment */
+  .about-content,
+  .interests-content,
+  .looking-for-content {
+    width: 90%;
+    text-align: left;
+    margin: 0 auto;
+  }
+
+  /* Mobile gallery header adjustments */
+  .gallery-header {
+    width: 85%;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 0px; /* No margin - directly touching the gallery */
+    margin-top: -20px; /* Move down more by pulling up the gallery */
+    position: relative;
+    z-index: 10;
+  }
+
+  .gallery-title {
+    text-align: center;
+    width: 100%;
+  }
+
+  .gallery-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .gallery-wrapper {
+    height: 200px;
+    width: 85%;
+    margin: 0 auto;
+  }
+
+  .empty-gallery {
+    height: 200px;
+    width: 85%;
+    margin: 0 auto;
+  }
+
+  /* Mobile edit mode adjustments */
+  .gallery-wrapper.edit-mode {
+    width: 95%;
+    padding: 15px 0;
+  }
+
+  .gallery-wrapper.edit-mode .col-4,
+  .gallery-wrapper.edit-mode .col-md-3 {
+    width: 120px;
+  }
+
+  .gallery-wrapper.edit-mode img {
+    height: 100px !important;
+  }
+
+  .empty-gallery-icon {
+    font-size: 2.5rem;
+  }
+
+  .empty-gallery-title {
+    font-size: 1.1rem;
+  }
+
+  .empty-gallery-message {
+    font-size: 0.8rem;
+  }
+}

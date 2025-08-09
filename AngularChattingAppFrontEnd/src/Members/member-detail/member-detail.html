@@ -1,0 +1,181 @@
+<div class="profile-page-container">
+  <div *ngIf="member" class="profile-card main-card">
+    <div class="profile-tabs">
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'details'"
+        (click)="setTab('details')"
+      >
+        <i class="fas fa-user me-1"></i> Details
+      </button>
+      <button
+        class="tab-btn"
+        [class.active]="activeTab === 'gallery'"
+        (click)="setTab('gallery')"
+      >
+        <i class="fas fa-images me-1"></i> Gallery
+      </button>
+    </div>
+
+    <div class="tab-content mt-3">
+      <div *ngIf="activeTab === 'gallery'">
+        <!-- Gallery with photos -->
+        <div
+          class="gallery-wrapper"
+          *ngIf="member.photos && member.photos.length > 0"
+        >
+          <gallery
+            #galleryComp
+            [items]="galleryImages"
+            [thumbPosition]="'bottom'"
+            [nav]="true"
+            [autoplay]="true"
+          ></gallery>
+        </div>
+
+        <!-- Gallery View Mode with Photo Grid -->
+        <div
+          class="gallery-grid"
+          *ngIf="member.photos && member.photos.length > 0"
+        >
+          <div class="row g-2 mt-3">
+            <div
+              class="col-3 col-md-2"
+              *ngFor="let photo of member.photos; let i = index"
+            >
+              <div class="position-relative photo-item">
+                <img
+                  [src]="photo.url"
+                  class="img-fluid rounded shadow"
+                  style="
+                    width: 100%;
+                    height: 80px;
+                    object-fit: cover;
+                    cursor: pointer;
+                  "
+                  (click)="openPhotoViewer(i)"
+                />
+                <button
+                  class="btn btn-primary btn-sm photo-view-btn"
+                  (click)="openPhotoViewer(i)"
+                  title="View Photo"
+                >
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty gallery state -->
+        <div
+          class="empty-gallery"
+          *ngIf="!member.photos || member.photos.length === 0"
+        >
+          <div class="empty-gallery-content">
+            <i class="fas fa-images empty-gallery-icon"></i>
+            <h4 class="empty-gallery-title">No Photos Yet</h4>
+            <p class="empty-gallery-message">
+              {{ member.knownAs || member.userName }} hasn't added any photos to
+              their gallery yet.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'details'">
+        <div class="profile-photo-row">
+          <img
+            [src]="getProfileImageUrl(member.photoUrl)"
+            class="profile-photo"
+            alt="{{ member.userName }}'s photo"
+          />
+        </div>
+        <div class="profile-info">
+          <h1 class="profile-name">{{ member.knownAs || member.userName }}</h1>
+
+          <!-- Like Count Display -->
+          <div class="like-count-display" *ngIf="likeCount > 0">
+            <span class="like-count-badge">
+              <i class="fas fa-heart text-danger"></i> {{ likeCount }} like{{
+                likeCount !== 1 ? "s" : ""
+              }}
+            </span>
+          </div>
+
+          <div class="profile-meta">
+            <span *ngIf="member.city"
+              ><i class="fas fa-map-marker-alt me-1"></i>{{ member.city }}</span
+            >
+            <span *ngIf="member.country" class="ms-3"
+              ><i class="fas fa-flag me-1"></i>{{ member.country }}</span
+            >
+            <span *ngIf="member.age" class="ms-3"
+              ><i class="fas fa-birthday-cake me-1"></i
+              >{{ member.age }} yrs</span
+            >
+            <span *ngIf="member.gender" class="ms-3"
+              ><i class="fas fa-venus-mars me-1"></i>{{ member.gender }}</span
+            >
+          </div>
+          <div class="profile-section" *ngIf="member.introduction">
+            <h4>About Me</h4>
+            <p>{{ member.introduction }}</p>
+          </div>
+          <div class="profile-section" *ngIf="member.interests">
+            <h4>Interests</h4>
+            <p>{{ member.interests }}</p>
+          </div>
+          <div class="profile-section" *ngIf="member.lookingFor">
+            <h4>Looking For</h4>
+            <p>{{ member.lookingFor }}</p>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button
+            class="btn btn-lg like-btn"
+            [class.btn-outline-danger]="!isLiked"
+            [class.btn-danger]="isLiked"
+            [class.btn-secondary]="isOwnProfile"
+            [disabled]="likeLoading || isOwnProfile"
+            (click)="toggleLike()"
+            [title]="
+              isOwnProfile
+                ? 'Cannot like yourself'
+                : isLiked
+                ? 'Unlike'
+                : 'Like'
+            "
+          >
+            <i class="fas fa-heart" *ngIf="isLiked"></i>
+            <i class="far fa-heart" *ngIf="!isLiked"></i>
+            <span
+              class="spinner-border spinner-border-sm ms-1"
+              *ngIf="likeLoading"
+            ></span>
+            {{ isLiked ? "Unlike" : "Like" }}
+          </button>
+          <button
+            class="btn btn-outline-secondary btn-lg"
+            [class.btn-secondary]="isOwnProfile"
+            [disabled]="isOwnProfile"
+            (click)="sendMessage()"
+            [title]="isOwnProfile ? 'Cannot message yourself' : 'Send message'"
+          >
+            <i class="far fa-envelope"></i>
+            Message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo Viewer Modal -->
+  <app-photo-viewer
+    [isOpen]="showPhotoViewer"
+    [photos]="member?.photos || []"
+    [currentIndex]="photoViewerIndex"
+    (closed)="closePhotoViewer()"
+  >
+  </app-photo-viewer>
+</div>

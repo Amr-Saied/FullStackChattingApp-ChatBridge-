@@ -1,0 +1,59 @@
+<div class="member-card main-card">
+  <div class="member-photo">
+    <img
+      [src]="getProfileImageUrl(member.photoUrl)"
+      alt="{{ member.userName }}'s photo"
+    />
+  </div>
+  <div class="member-info">
+    <h5 class="member-name">{{ member.knownAs || member.userName }}</h5>
+    <p class="member-city">{{ member.city }}</p>
+    <p class="member-last-active" *ngIf="lastActiveStatus">
+      <small class="text-muted">
+        <i class="fas fa-clock"></i> {{ lastActiveStatus }}
+      </small>
+    </p>
+
+    <!-- Like Count Display -->
+    <div class="like-count" *ngIf="likeCount > 0">
+      <small class="text-muted">
+        <i class="fas fa-heart text-danger"></i> {{ likeCount }} like{{
+          likeCount !== 1 ? "s" : ""
+        }}
+      </small>
+    </div>
+
+    <div class="member-actions mt-3 d-flex justify-content-center gap-2">
+      <a
+        [routerLink]="['/member', member.id]"
+        class="btn btn-main btn-xs"
+        title="Details"
+      >
+        <i class="fas fa-eye"></i>
+      </a>
+      <button
+        class="btn btn-xs like-btn"
+        [class.btn-outline-danger]="!isLiked"
+        [class.btn-danger]="isLiked"
+        [class.btn-secondary]="isOwnProfile"
+        [disabled]="loading || isOwnProfile"
+        (click)="toggleLike()"
+        [title]="
+          isOwnProfile ? 'Cannot like yourself' : isLiked ? 'Unlike' : 'Like'
+        "
+      >
+        <i class="fas fa-heart" *ngIf="isLiked"></i>
+        <i class="far fa-heart" *ngIf="!isLiked"></i>
+        <span class="spinner-border spinner-border-sm" *ngIf="loading"></span>
+      </button>
+      <button
+        class="btn btn-outline-secondary btn-xs"
+        title="Message"
+        (click)="sendMessage()"
+        [disabled]="isOwnProfile"
+      >
+        <i class="far fa-envelope"></i>
+      </button>
+    </div>
+  </div>
+</div>

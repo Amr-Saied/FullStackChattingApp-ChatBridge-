@@ -1,0 +1,136 @@
+<div class="container mt-3 pt-3">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-center mb-3">My Favourites</h2>
+
+      <!-- Search Input -->
+      <div *ngIf="isLoaded && totalCount > 0" class="row mb-4">
+        <div class="col-12 col-md-6 mx-auto">
+          <div class="search-container">
+            <div class="input-group">
+              <span class="input-group-text">
+                <i class="fas fa-search"></i>
+              </span>
+              <input
+                #searchInput
+                type="text"
+                class="form-control"
+                placeholder="Search favourites by name, username, or location..."
+                (input)="onSearchInput($event)"
+                autocomplete="off"
+              />
+              <button
+                *ngIf="searchTerm"
+                class="btn btn-outline-secondary"
+                type="button"
+                (click)="clearSearchAndLoadAll()"
+                title="Clear search"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div *ngIf="isSearching" class="text-center mt-2">
+              <small class="text-muted">
+                <i class="fas fa-spinner fa-spin me-1"></i>
+                Searching...
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!isLoaded" class="text-center">
+        <ngx-spinner
+          name="loadingSpinner"
+          type="ball-clip-rotate"
+          size="medium"
+        >
+          <p class="loading-text">Loading your favourites...</p>
+        </ngx-spinner>
+      </div>
+
+      <div *ngIf="isLoaded && likedMembers.length === 0" class="text-center">
+        <div class="empty-state">
+          <i class="fas fa-heart-broken text-muted" style="font-size: 3rem"></i>
+          <h4 class="mt-3 text-muted">No Favourites Yet</h4>
+          <p class="text-muted">
+            You haven't liked any members yet. Start exploring to find people
+            you like!
+          </p>
+          <a routerLink="/members" class="btn btn-primary">
+            <i class="fas fa-search me-2"></i>
+            Explore Members
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="isLoaded && likedMembers.length > 0" class="row">
+        <div class="col-12 mb-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fas fa-users me-2"></i>
+              {{ totalCount }} Favourite{{ totalCount !== 1 ? "s" : "" }}
+            </h5>
+            <button
+              class="btn btn-outline-primary btn-sm"
+              (click)="loadLikedMembers()"
+              title="Refresh favourites"
+            >
+              <i class="fas fa-sync-alt"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-3" *ngFor="let member of likedMembers">
+          <app-member-card [member]="member"></app-member-card>
+        </div>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div
+        class="pagination-container mt-2 mb-4"
+        *ngIf="
+          totalPages > 1 &&
+          isLoaded &&
+          likedMembers.length > 0 &&
+          !searchTerm.trim()
+        "
+      >
+        <div class="pagination-info">
+          <span
+            >Page {{ paginationParams.pageNumber }} of {{ totalPages }}</span
+          >
+          <span class="total-count">({{ totalCount }} total favourites)</span>
+        </div>
+        <div class="pagination-controls">
+          <button
+            class="btn btn-outline-primary"
+            [disabled]="paginationParams.pageNumber === 1"
+            (click)="onPageChanged(paginationParams.pageNumber - 1)"
+          >
+            Previous
+          </button>
+
+          <div class="page-numbers">
+            <button
+              *ngFor="let page of getPageNumbers()"
+              class="btn btn-outline-primary page-btn"
+              [class.active]="page === paginationParams.pageNumber"
+              (click)="onPageChanged(page)"
+            >
+              {{ page }}
+            </button>
+          </div>
+
+          <button
+            class="btn btn-outline-primary"
+            [disabled]="paginationParams.pageNumber >= totalPages"
+            (click)="onPageChanged(paginationParams.pageNumber + 1)"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

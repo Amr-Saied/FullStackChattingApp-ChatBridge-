@@ -1,0 +1,175 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/home">{{
+      translationService.translate("appName")
+    }}</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item" *ngIf="loggedIn; else empty1">
+          <a class="nav-link" routerLink="/members">{{
+            translationService.translate("exploreMembers")
+          }}</a>
+        </li>
+        <ng-template #empty1>
+          <li class="nav-item invisible">
+            <a class="nav-link">{{
+              translationService.translate("exploreMembers")
+            }}</a>
+          </li>
+        </ng-template>
+        <li class="nav-item" *ngIf="loggedIn; else empty2">
+          <a class="nav-link" routerLink="/lists">{{
+            translationService.translate("favourites")
+          }}</a>
+        </li>
+        <ng-template #empty2>
+          <li class="nav-item invisible">
+            <a class="nav-link">{{
+              translationService.translate("favourites")
+            }}</a>
+          </li>
+        </ng-template>
+        <li class="nav-item" *ngIf="loggedIn; else empty3">
+          <a class="nav-link" routerLink="/messages">{{
+            translationService.translate("messages")
+          }}</a>
+        </li>
+        <ng-template #empty3>
+          <li class="nav-item invisible">
+            <a class="nav-link">{{
+              translationService.translate("messages")
+            }}</a>
+          </li>
+        </ng-template>
+      </ul>
+
+      <!-- Login Button for Non-logged Users -->
+      <div class="d-flex align-items-center" *ngIf="!loggedIn">
+        <button
+          class="btn btn-success px-4 me-2"
+          type="button"
+          (click)="showLogin()"
+        >
+          <i class="fas fa-sign-in-alt me-1"></i>
+          {{ translationService.translate("login") }}
+        </button>
+
+        <!-- Language Switcher for Non-logged Users -->
+        <div class="me-2">
+          <app-language-switcher></app-language-switcher>
+        </div>
+
+        <!-- Theme Toggle for Non-logged Users -->
+        <div class="ms-2">
+          <app-theme-toggle></app-theme-toggle>
+        </div>
+      </div>
+
+      <!-- User Menu for Logged In Users -->
+      <div
+        class="navbar-nav ms-auto d-flex align-items-center"
+        *ngIf="loggedIn"
+      >
+        <!-- Language Switcher for Logged Users -->
+        <div class="me-3">
+          <app-language-switcher></app-language-switcher>
+        </div>
+
+        <!-- Theme Toggle for Logged Users -->
+        <div class="me-3">
+          <app-theme-toggle></app-theme-toggle>
+        </div>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              [src]="getProfileImageUrl()"
+              alt="Profile Photo"
+              class="navbar-profile-photo me-2"
+            />
+            <span>{{ getLoggedUsername() }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" routerLink="/profile">
+                <i class="fas fa-user me-2"></i
+                >{{ translationService.translate("profile") }}
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/edit-profile">
+                <i class="fas fa-edit me-2"></i
+                >{{ translationService.translate("editProfile") }}
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a
+                class="dropdown-item text-danger"
+                (click)="logout($event)"
+                style="cursor: pointer"
+              >
+                <i class="fas fa-sign-out-alt me-2"></i
+                >{{ translationService.translate("logout") }}
+              </a>
+            </li>
+          </ul>
+        </li>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Login Modal -->
+<div
+  class="modal fade"
+  [class.show]="showLoginModal"
+  [style.display]="showLoginModal ? 'block' : 'none'"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-sign-in-alt me-2"></i
+          >{{ translationService.translate("login") }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeLoginModal()"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <app-login-forms
+          *ngIf="showLoginModal"
+          #loginForms
+          (loginSuccess)="onLoginSuccess($event)"
+          (closeModal)="closeLoginModal()"
+          (formReady)="onLoginFormReady()"
+        ></app-login-forms>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Backdrop -->
+<div class="modal-backdrop fade show" *ngIf="showLoginModal"></div>

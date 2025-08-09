@@ -1,0 +1,457 @@
+<!-- Main Login Form -->
+<div
+  class="login-container"
+  *ngIf="
+    !showForgotPassword &&
+    !showForgotUsername &&
+    !showResendConfirmation &&
+    !showResetPassword
+  "
+>
+  <div class="login-header">
+    <h3 class="text-center mb-4">
+      <i class="fas fa-sign-in-alt me-2"></i>Welcome Back
+    </h3>
+  </div>
+
+  <!-- Login Form -->
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form">
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-user me-1 text-primary"></i>
+        Username
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-user text-muted"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter your username"
+          formControlName="username"
+          [class.is-invalid]="
+            loginForm.get('username')?.invalid &&
+            loginForm.get('username')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          loginForm.get('username')?.invalid &&
+          loginForm.get('username')?.touched
+        "
+      >
+        Username is required
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-lock me-1 text-primary"></i>
+        Password
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-lock text-muted"></i>
+        </span>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter your password"
+          formControlName="password"
+          [class.is-invalid]="
+            loginForm.get('password')?.invalid &&
+            loginForm.get('password')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          loginForm.get('password')?.invalid &&
+          loginForm.get('password')?.touched
+        "
+      >
+        Password is required
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100 mb-3"
+      [disabled]="loginForm.invalid || isLoading"
+    >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      <i class="fas fa-sign-in-alt me-2" *ngIf="!isLoading"></i>
+      {{ isLoading ? "Logging in..." : "Login" }}
+    </button>
+
+    <!-- Google Login Button -->
+    <div class="google-signin-wrapper mb-3">
+      <div id="google-signin-button"></div>
+    </div>
+
+    <!-- Help Links -->
+    <div class="help-links text-center">
+      <div class="row">
+        <div class="col-6">
+          <button
+            type="button"
+            class="btn btn-link p-0"
+            (click)="showForgotPasswordForm()"
+          >
+            <small>Forgot Password?</small>
+          </button>
+        </div>
+        <div class="col-6">
+          <button
+            type="button"
+            class="btn btn-link p-0"
+            (click)="showForgotUsernameForm()"
+          >
+            <small>Forgot Username?</small>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Forgot Password Form -->
+<div class="login-container" *ngIf="showForgotPassword">
+  <div class="login-header">
+    <button type="button" class="btn btn-link p-0 mb-2" (click)="backToLogin()">
+      <i class="fas fa-arrow-left me-1"></i>Back to Login
+    </button>
+    <h3 class="text-center mb-4">
+      <i class="fas fa-key me-2"></i>Reset Password
+    </h3>
+  </div>
+
+  <form
+    [formGroup]="forgotPasswordForm"
+    (ngSubmit)="forgotPassword()"
+    class="login-form"
+  >
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-envelope me-1 text-primary"></i>
+        Email Address
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-envelope text-muted"></i>
+        </span>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Enter your email address"
+          formControlName="email"
+          [class.is-invalid]="
+            forgotPasswordForm.get('email')?.invalid &&
+            forgotPasswordForm.get('email')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          forgotPasswordForm.get('email')?.invalid &&
+          forgotPasswordForm.get('email')?.touched
+        "
+      >
+        Please enter a valid email address
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100 mb-3"
+      [disabled]="forgotPasswordForm.invalid || isLoading"
+    >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      <i class="fas fa-paper-plane me-2" *ngIf="!isLoading"></i>
+      {{ isLoading ? "Sending..." : "Send Reset Link" }}
+    </button>
+
+    <p class="text-muted small text-center">
+      We'll send you a password reset link to your email address.
+    </p>
+  </form>
+</div>
+
+<!-- Forgot Username Form -->
+<div class="login-container" *ngIf="showForgotUsername">
+  <div class="login-header">
+    <button type="button" class="btn btn-link p-0 mb-2" (click)="backToLogin()">
+      <i class="fas fa-arrow-left me-1"></i>Back to Login
+    </button>
+    <h3 class="text-center mb-4">
+      <i class="fas fa-user me-2"></i>Forgot Username
+    </h3>
+  </div>
+
+  <form
+    [formGroup]="forgotUsernameForm"
+    (ngSubmit)="forgotUsername()"
+    class="login-form"
+  >
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-envelope me-1 text-primary"></i>
+        Email Address
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-envelope text-muted"></i>
+        </span>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Enter your email address"
+          formControlName="email"
+          [class.is-invalid]="
+            forgotUsernameForm.get('email')?.invalid &&
+            forgotUsernameForm.get('email')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          forgotUsernameForm.get('email')?.invalid &&
+          forgotUsernameForm.get('email')?.touched
+        "
+      >
+        Please enter a valid email address
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100 mb-3"
+      [disabled]="forgotUsernameForm.invalid || isLoading"
+    >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      <i class="fas fa-paper-plane me-2" *ngIf="!isLoading"></i>
+      {{ isLoading ? "Sending..." : "Send Username Reminder" }}
+    </button>
+
+    <p class="text-muted small text-center">
+      We'll send your username to your email address.
+    </p>
+  </form>
+</div>
+
+<!-- Resend Confirmation Email Form -->
+<div class="login-container" *ngIf="showResendConfirmation">
+  <div class="login-header">
+    <button type="button" class="btn btn-link p-0 mb-2" (click)="backToLogin()">
+      <i class="fas fa-arrow-left me-1"></i>Back to Login
+    </button>
+    <h3 class="text-center mb-4">
+      <i class="fas fa-envelope me-2"></i>Resend Confirmation
+    </h3>
+  </div>
+
+  <form
+    [formGroup]="resendConfirmationForm"
+    (ngSubmit)="resendConfirmation()"
+    class="login-form"
+  >
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-envelope me-1 text-primary"></i>
+        Email Address
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-envelope text-muted"></i>
+        </span>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Enter your email address"
+          formControlName="email"
+          [class.is-invalid]="
+            resendConfirmationForm.get('email')?.invalid &&
+            resendConfirmationForm.get('email')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          resendConfirmationForm.get('email')?.invalid &&
+          resendConfirmationForm.get('email')?.touched
+        "
+      >
+        Please enter a valid email address
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100 mb-3"
+      [disabled]="resendConfirmationForm.invalid || isLoading"
+    >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      <i class="fas fa-paper-plane me-2" *ngIf="!isLoading"></i>
+      {{ isLoading ? "Sending..." : "Resend Confirmation Email" }}
+    </button>
+
+    <p class="text-muted small text-center">
+      We'll send a new confirmation email to your address.
+    </p>
+  </form>
+</div>
+
+<!-- Reset Password Form -->
+<div class="login-container" *ngIf="showResetPassword">
+  <div class="login-header">
+    <button type="button" class="btn btn-link p-0 mb-2" (click)="backToLogin()">
+      <i class="fas fa-arrow-left me-1"></i>Back to Login
+    </button>
+    <h3 class="text-center mb-4">
+      <i class="fas fa-key me-2"></i>Set New Password
+    </h3>
+  </div>
+
+  <form
+    [formGroup]="resetPasswordForm"
+    (ngSubmit)="resetPassword()"
+    class="login-form"
+  >
+    <div class="form-group mb-3" *ngIf="!resetToken">
+      <label class="form-label">
+        <i class="fas fa-key me-1 text-primary"></i>
+        Reset Token
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-key text-muted"></i>
+        </span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Enter reset token"
+          formControlName="token"
+          [class.is-invalid]="
+            resetPasswordForm.get('token')?.invalid &&
+            resetPasswordForm.get('token')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          resetPasswordForm.get('token')?.invalid &&
+          resetPasswordForm.get('token')?.touched
+        "
+      >
+        Reset token is required
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-lock me-1 text-primary"></i>
+        New Password
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-lock text-muted"></i>
+        </span>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Enter new password"
+          formControlName="newPassword"
+          [class.is-invalid]="
+            resetPasswordForm.get('newPassword')?.invalid &&
+            resetPasswordForm.get('newPassword')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          resetPasswordForm.get('newPassword')?.invalid &&
+          resetPasswordForm.get('newPassword')?.touched
+        "
+      >
+        Password must be at least 6 characters
+      </div>
+    </div>
+
+    <div class="form-group mb-3">
+      <label class="form-label">
+        <i class="fas fa-lock me-1 text-primary"></i>
+        Confirm Password
+        <span class="text-danger">*</span>
+      </label>
+      <div class="input-group">
+        <span class="input-group-text bg-light">
+          <i class="fas fa-lock text-muted"></i>
+        </span>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Confirm new password"
+          formControlName="confirmPassword"
+          [class.is-invalid]="
+            resetPasswordForm.get('confirmPassword')?.invalid &&
+            resetPasswordForm.get('confirmPassword')?.touched
+          "
+        />
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          resetPasswordForm.get('confirmPassword')?.invalid &&
+          resetPasswordForm.get('confirmPassword')?.touched
+        "
+      >
+        Please confirm your password
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary w-100 mb-3"
+      [disabled]="resetPasswordForm.invalid || isLoading"
+    >
+      <span
+        *ngIf="isLoading"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      <i class="fas fa-save me-2" *ngIf="!isLoading"></i>
+      {{ isLoading ? "Resetting..." : "Reset Password" }}
+    </button>
+
+    <p class="text-muted small text-center">
+      Enter your new password and confirm it to reset your password.
+    </p>
+  </form>
+</div>

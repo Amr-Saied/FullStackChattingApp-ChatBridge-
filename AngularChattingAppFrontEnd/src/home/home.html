@@ -1,0 +1,74 @@
+<div class="home-container">
+  <!-- Simple gradient background -->
+  <div class="background-gradient"></div>
+
+  <!-- Welcome section for non-logged in users -->
+  <div class="welcome-container" *ngIf="!registerMode && !loggedIn">
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="title-text">ChatBridge</span>
+        </h1>
+        <p class="hero-subtitle">
+          Connect with People and Expand Your Network!
+        </p>
+        <button class="cta-button" (click)="registerToggle()">
+          Get Started
+        </button>
+      </div>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <h3>Real-time Chat</h3>
+        <p>Instant messaging with friends and family in real-time</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📸</div>
+        <h3>Photo Sharing</h3>
+        <p>Share your moments with beautiful photo galleries</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">👥</div>
+        <h3>Connect & Like</h3>
+        <p>Find new friends and like their posts and photos</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register form for non-logged in users -->
+  <div class="register-container" *ngIf="registerMode && !loggedIn">
+    <app-register (cancelClicked)="goBackToWelcome()"></app-register>
+  </div>
+
+  <!-- Main content for logged in users -->
+  <div class="dashboard-container" *ngIf="loggedIn">
+    <div class="dashboard-content">
+      <h2 class="dashboard-title">🎉 Welcome back to ChatBridge!</h2>
+      <p class="dashboard-subtitle">
+        Ready to connect with your friends? Use the navigation bar to explore
+        different sections.
+      </p>
+
+      <div class="dashboard-grid">
+        <div class="dashboard-item">
+          <div class="dashboard-icon">👋</div>
+          <h4>Start Chatting</h4>
+          <p>Jump into conversations with your connections</p>
+        </div>
+        <div class="dashboard-item">
+          <div class="dashboard-icon">🔍</div>
+          <h4>Discover People</h4>
+          <p>Find new friends and expand your network</p>
+        </div>
+        <div class="dashboard-item">
+          <div class="dashboard-icon">❤️</div>
+          <h4>Show Love</h4>
+          <p>Like posts and connect with your favorites</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

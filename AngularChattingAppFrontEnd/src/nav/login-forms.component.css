@@ -1,0 +1,318 @@
+/* Login Forms Component Styles */
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.login-header {
+  margin-bottom: 2rem;
+}
+
+.login-header h3 {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.login-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+.form-control {
+  border-color: var(--border-color);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-control.is-invalid {
+  border-color: var(--danger-color);
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.invalid-feedback {
+  color: var(--danger-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.btn {
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(var(--primary-rgb), 0.3);
+}
+
+.btn-primary:disabled {
+  background-color: var(--text-muted);
+  border-color: var(--text-muted);
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-outline-dark {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+.btn-outline-dark:hover {
+  background-color: var(--bg-secondary);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.btn-outline-dark:disabled {
+  opacity: 0.6;
+  transform: none;
+}
+
+.btn-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.btn-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.help-links {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.help-links .btn-link {
+  font-size: 0.875rem;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-danger {
+  color: var(--danger-color) !important;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+/* Dark theme specific styles */
+.dark-theme .form-control {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .input-group-text {
+  background-color: var(--bg-tertiary) !important;
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+.dark-theme .btn-outline-dark {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-theme .btn-outline-dark:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+/* Animation for form transitions */
+.login-container {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .login-container {
+    padding: 1rem;
+  }
+
+  .help-links .row {
+    flex-direction: column;
+  }
+
+  .help-links .col-6 {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Google Sign-In Button Styles */
+.google-signin-wrapper {
+  margin: 1rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 40px; /* Ensure minimum height */
+}
+
+.google-signin-wrapper .g_id_signin {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  min-height: 40px; /* Ensure minimum height */
+}
+
+/* Ensure Google button is visible and full width */
+.g_id_signin > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 40px !important; /* Force minimum height */
+}
+
+/* Force the Google button container to be visible */
+#google-signin-button {
+  min-height: 40px !important;
+  display: block !important;
+  visibility: visible !important;
+  width: 100% !important;
+}
+
+/* Make Google button match login button width */
+#google-signin-button > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#google-signin-button > div > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#google-signin-button > div > div > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#google-signin-button > div > div > div > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Specific selector for the Google button container */
+#google-signin-button
+  > div
+  > div
+  > div
+  > div.nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
+/* Ensure the Google button itself stretches to full width */
+#google-signin-button > div > div > div > div > div {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Dark theme adjustments for Google button */
+.dark-theme .google-signin-wrapper {
+  background-color: var(--bg-primary);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+/* Fix Google button text visibility in dark mode */
+.dark-theme #google-signin-button {
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Ensure Google button text is visible in dark mode */
+.dark-theme #google-signin-button * {
+  color: #333 !important;
+}
+
+/* Specific override for Google button text in dark mode */
+.dark-theme #google-signin-button .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb {
+  color: #333 !important;
+}
+
+.dark-theme #google-signin-button .nsm7Bb-HzV7m-LgbsSe-bN97Pc-sM5MNb span {
+  color: #333 !important;
+}
+
+/* Force Google button to use light theme in dark mode */
+.dark-theme #google-signin-button iframe {
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* Loading state styles */
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.spinner-border {
+  animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}

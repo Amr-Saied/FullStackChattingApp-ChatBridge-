@@ -1,0 +1,12 @@
+{
+  "name": "RejectSilence",
+  "version": "1.0.0",
+  "description": "A social media chatting application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.7"
+  }
+}
