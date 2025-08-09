@@ -93,7 +93,7 @@ ChatBridge/
 ### **2. Backend Setup**
 
 ```bash
-git clone https://github.com/Amr-Saied/FullStackChattingApp-ChatBridge-
+git clone https://github.com/Amr-Saied/FullStackChattingApp-ChatBridge-.git
 cd ChattingApplicationProject
 
 Configure Database
