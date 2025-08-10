@@ -1,5 +1,13 @@
 # **ChatBridge – Full-Stack Real-Time Chat Application**
 
+## 🔗 Repositories & Commit History
+- **Frontend**: [AngularchattingApplicationFrontEnd](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd)  
+  _(Browse [full commit history](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd/commits))_
+- **Backend**: [ChattingApplication](https://github.com/Amr-Saied/ChattingApplication)  
+  _(Browse [full commit history](https://github.com/Amr-Saied/ChattingApplication/commits))_
+
+---
+
 A modern, high-performance **social messaging platform** built with **ASP.NET Core Web API (Backend)** and **Angular (Frontend)**.  
 The system delivers **secure, scalable, and interactive communication** with **real-time messaging, profile management, and administrative oversight**.  
 
@@ -50,15 +58,6 @@ ChatBridge follows a **modular, service-oriented architecture (SOA)**, with stri
 | **Frontend**     | Angular 20.0.5, TypeScript, RxJS, HTML5, SCSS |
 | **Cloud Hosting**| Cloudinary (media), Vercel/Netlify (frontend hosting), MonsterASP.NET (backend) |
 | **Documentation**| Swagger / OpenAPI |
----
-
-## 🔗 Repositories & Commit History
-- **Frontend**: [AngularchattingApplicationFrontEnd](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd)  
-  _(Browse [full commit history](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd/commits))_
-- **Backend**: [ChattingApplication](https://github.com/Amr-Saied/ChattingApplication)  
-  _(Browse [full commit history](https://github.com/Amr-Saied/ChattingApplication/commits))_
-
----
 
 ---
 
