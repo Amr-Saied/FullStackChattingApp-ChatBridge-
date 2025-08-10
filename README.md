@@ -48,11 +48,8 @@ ChatBridge follows a **modular, service-oriented architecture (SOA)**, with stri
 |------------------|--------------|
 | **Backend**      | ASP.NET Core 9.0, Entity Framework Core, SQL Server, SignalR, AutoMapper, JWT |
 | **Frontend**     | Angular 20.0.5, TypeScript, RxJS, HTML5, SCSS |
-| **Cloud Hosting**| Cloudinary (media), Vercel/Netlify (frontend hosting), Azure/AWS (backend) |
+| **Cloud Hosting**| Cloudinary (media), Vercel/Netlify (frontend hosting), MonsterASP.NET (backend) |
 | **Documentation**| Swagger / OpenAPI |
-| **Testing**      | xUnit (backend), Jasmine/Karma (frontend) |
-
-
 ---
 
 ## 🔗 Repositories & Commit History
