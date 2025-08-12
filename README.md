@@ -1,5 +1,7 @@
 # **ChatBridge – Full-Stack Real-Time Chat Application**
 
+[Link to Deployed App](https://angular-chatting-app-front-end.vercel.app/home)
+
 ## 🔗 Repositories & Commit History
 - **Frontend**: [AngularchattingApplicationFrontEnd](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd)  
   _(Browse [full commit history](https://github.com/Amr-Saied/AngularchattingApplicationFrontEnd/commits))_
